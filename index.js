@@ -15,6 +15,12 @@ var destinationY=parseInt(endCoordinates.split('-')[1]);
 var currentX, currentY;
 var speed=15;
 
+$('.speed').change(function(){
+  if (!solving) {
+    speed=parseFloat($(this).val());
+  }
+});
+
 $('.mazeData').mousedown(function(){
   if((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && !$(this).hasClass('wall')){
     $(this).addClass('wall');
@@ -25,9 +31,13 @@ $('.mazeData').mousedown(function(){
   }
 });
 
-$('.speed').change(function(){
-  if (!solving) {
-    speed=parseFloat($(this).val());
+$('.mazeData').on("vmousedown", function(){
+  if((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && !$(this).hasClass('wall')){
+    $(this).addClass('wall');
+    addingWalls=true;
+  }else if ((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && $(this).hasClass('wall')) {
+    $(this).removeClass('wall');
+    removingWalls=true;
   }
 });
 
@@ -42,11 +52,35 @@ $(document).mouseup(function(){
   }
 });
 
+$(document).on("vmouseup", function(){
+  // console.log('mouseup occured');
+  if (addingWalls) {
+    addingWalls=false;
+  }
+  if (removingWalls) {
+    removingWalls=false;
+    // console.log('removing walls toggled');
+  }
+});
+
 $('.maze').mousemove(function(event){
   event.preventDefault();
 });
 
+$('.maze').on("vmousemove", function(event){
+  event.preventDefault();
+});
+
 $('.mazeData').mousemove(function(event){
+  event.preventDefault();
+  if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
+    $(this).addClass('wall');
+  }else if (removingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
+    $(this).removeClass('wall');
+  }
+});
+
+$('.mazeData').on("vmousemove", function(event){
   event.preventDefault();
   if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
     $(this).addClass('wall');
