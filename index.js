@@ -249,13 +249,21 @@ $('.find').on('click touchstart', function(){
     findPath();
     if (!flag) {
       setTimeout(function(){
-        alert("No solution!");
+        $('.find').text('NO SOLUTION');
+        $('.find').addClass('error');
       }, delay);
     }
     setTimeout(function(){
       solving=false;
       $('.'+endCoordinates).addClass('success');
-      $('.find').text('FIND');
+      if (flag) {
+        $('.find').text('FIND');
+      }else {
+        setTimeout(function(){
+          $('.find').text('FIND');
+          $('.find').removeClass('error');
+        }, delay+1000);
+      }
       $('.speed').attr('disabled', false);
     }, delay);
   }

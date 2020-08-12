@@ -24,8 +24,8 @@
     </div> -->
     <div class="container-fluid maze">
       <div class='mazeControl'>
-        <button type="button" class="find btn btn-primary btn-md">FIND</button>
-        <button type="button" class="clear btn btn-primary btn-md">CLEAR BOARD</button>
+        <button type="button" class="find btn button btn-md">FIND</button>
+        <button type="button" class="clear btn button btn-md">CLEAR BOARD</button>
         <span class='speedControl'>
           <label>Select the animation speed:</label>
           <select class="speed">

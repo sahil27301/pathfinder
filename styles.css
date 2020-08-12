@@ -32,9 +32,22 @@ ul {
   float: right;
 }
 
+.button {
+  background-color: #ade498;
+}
+
+.button:focus {
+  box-shadow: none;
+}
+
 .find {
   margin: 0.4%;
 }
+
+.error {
+  background-color: red;
+}
+
 .clear {
   margin:0.4%;
 }
