@@ -31,7 +31,7 @@ $('.mazeData').mousedown(function(){
   }
 });
 
-$('.mazeData').on("vmousedown", function(){
+$('.mazeData').on("touchstart", function(){
   if((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && !$(this).hasClass('wall')){
     $(this).addClass('wall');
     addingWalls=true;
@@ -52,7 +52,7 @@ $(document).mouseup(function(){
   }
 });
 
-$(document).on("vmouseup", function(){
+$(document).on("touchend", function(){
   // console.log('mouseup occured');
   if (addingWalls) {
     addingWalls=false;
@@ -67,7 +67,7 @@ $('.maze').mousemove(function(event){
   event.preventDefault();
 });
 
-$('.maze').on("vmousemove", function(event){
+$('.maze').on("touchmove", function(event){
   event.preventDefault();
 });
 
@@ -80,7 +80,7 @@ $('.mazeData').mousemove(function(event){
   }
 });
 
-$('.mazeData').on("vmousemove", function(event){
+$('.mazeData').on("touchmove", function(event){
   event.preventDefault();
   if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
     $(this).addClass('wall');

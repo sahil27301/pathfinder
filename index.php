@@ -7,7 +7,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-	  <script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -38,7 +37,6 @@
           </select>
         </span>
       </div>
-      <p class='solving'>Solving!</p>
       <table class='mazeTable'>
         <?php
           for ($i=0; $i < 22; $i++) {
