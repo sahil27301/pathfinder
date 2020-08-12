@@ -20,11 +20,25 @@ $('.speed').change(function(){
   }
 });
 
-// $('.speed').on('touchstart', function(e){
-//   console.log(e);
-//   $('.speed').click();
-// });
-// $('.maze').on('touchstart', function(e){
+// $('.mazeData').on('touchmove', function(e)
+// {
+//   var theTouch = e.changedTouches[0];
+//   var mouseEv;
+//   switch(e.type)
+//   {
+//     case "touchstart": mouseEv="mousedown"; break;
+//     case "touchend":   mouseEv="mouseup"; break;
+//     case "touchmove":  mouseEv="mousemove"; break;
+//     default: return;
+//   }
+//
+//   var mouseEvent = document.createEvent("MouseEvent");
+//   mouseEvent.initMouseEvent(mouseEv, true, true, window, 1, theTouch.screenX, theTouch.screenY, theTouch.clientX, theTouch.clientY, false, false, false, false, 0, null);
+//   theTouch.target.dispatchEvent(mouseEvent);
+//   // console.log(mouseEvent.clientX+' '+mouseEvent.clientY);
+//   let elem = document.elementFromPoint(mouseEvent.clientX, mouseEvent.clientY);
+//   elem.classList.add('wall');
+//   console.log(elem.classList);
 //   e.preventDefault();
 // });
 
@@ -92,13 +106,26 @@ $('.mazeData').mousemove(function(event){
 
 // $('.mazeData').on("touchmove", function(event){
 //   event.preventDefault();
-//   console.log($(this).attr("class"));
-//   if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
-//     $(this).addClass('wall');
-//   }else if (removingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
-//     $(this).removeClass('wall');
-//   }
+  // console.log($(this).attr("class"));
+  // console.log(event.changedTouches);
+  // if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
+  //   $(this).addClass('wall');
+  // }else if (removingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
+  //   $(this).removeClass('wall');
+  // }
 // });
+ $('.mazeData').on('touchmove', function(e){
+   let elem = document.elementFromPoint(e.changedTouches[0].screenX, e.changedTouches[0].screenY);
+   console.log($(elem).attr('class'));
+   if ($(elem).hasClass('mazeData')) {
+     if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
+       $(elem).addClass('wall');
+     }else if (removingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
+       $(elem).removeClass('wall');
+     }
+   }
+ });
+
 
 $('.clear').on('click touchstart', function(){
   if(!solving){
