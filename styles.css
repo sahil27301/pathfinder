@@ -5,7 +5,7 @@ body {
 }
 
 .heading {
-  padding: 10px;
+  padding: 1%;
   background-color: #00b7c2;
 }
 
@@ -20,7 +20,7 @@ ul {
 
 .maze {
   background-color: #b2ebf2;
-  padding: 30px;
+  padding: 2.5%;
 }
 
 .mazeControl {
@@ -33,10 +33,10 @@ ul {
 }
 
 .find {
-  margin: 5px;
+  margin: 0.4%;
 }
 .clear {
-  margin:5px;
+  margin:0.4%;
 }
 
 .mazeTable {
