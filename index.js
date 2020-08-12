@@ -21,7 +21,9 @@ $('.speed').change(function(){
   }
 });
 
-$('.mazeData').mousedown(function(){
+$('.mazeData').mousedown(function(e){////////////////////////////////////////////////////////////////////////////////////////////////
+  console.log("mousedown");
+  e.preventDefault();
   if((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && !$(this).hasClass('wall')){
     $(this).addClass('wall');
     addingWalls=true;
@@ -31,7 +33,9 @@ $('.mazeData').mousedown(function(){
   }
 });
 
-$('.mazeData').on("touchstart", function(){
+$('.mazeData').on("touchstart", function(e){////////////////////////////////////////////////////////////////////////////////////////////////
+  console.log("touch start");
+  e.preventDefault();
   if((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && !$(this).hasClass('wall')){
     $(this).addClass('wall');
     addingWalls=true;
@@ -41,8 +45,9 @@ $('.mazeData').on("touchstart", function(){
   }
 });
 
-$(document).mouseup(function(){
+$(document).mouseup(function(e){////////////////////////////////////////////////////////////////////////////////////////////////
   // console.log('mouseup occured');
+  e.preventDefault();
   if (addingWalls) {
     addingWalls=false;
   }
@@ -52,8 +57,10 @@ $(document).mouseup(function(){
   }
 });
 
-$(document).on("touchend", function(){
+$(document).on("touchend", function(e){////////////////////////////////////////////////////////////////////////////////////////////////
   // console.log('mouseup occured');
+  e.preventDefault();
+  console.log("touch end");
   if (addingWalls) {
     addingWalls=false;
   }
@@ -82,6 +89,7 @@ $('.mazeData').mousemove(function(event){
 
 $('.mazeData').on("touchmove", function(event){
   event.preventDefault();
+  console.log($(this).attr("class"));
   if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
     $(this).addClass('wall');
   }else if (removingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
