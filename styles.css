@@ -1,0 +1,88 @@
+body {
+  text-align: center;
+  font-size: 150%;
+  background-color: #b2ebf2;
+}
+
+.heading {
+  padding: 10px;
+  background-color: #00b7c2;
+}
+
+/* .instructions {
+  background-color: #00b7c2;
+  padding: 20px;
+} */
+
+ul {
+  list-style-type: none;
+}
+
+.maze {
+  background-color: #b2ebf2;
+  padding: 30px;
+}
+
+.mazeControl {
+  text-align: left;
+  padding:0 10% 0 10%;
+}
+
+.speedControl {
+  float: right;
+}
+
+.find {
+  margin: 5px;
+}
+.clear {
+  margin:5px;
+}
+
+.mazeTable {
+  display: inline-block;
+  border-width: 0;
+  table-layout:fixed;
+}
+
+.mazeData {
+  background-color: white;
+  width:25px;
+  height: 25px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+}
+
+.startPoint {
+  background-image:url(images/start.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.endPoint {
+  background-image:url(images/end.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.success {
+  background-image:url(images/success.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.active {
+  background-color: lightblue;
+}
+
+.wall {
+  background-color: blue;
+}
+
+.flash {
+  background-color: darkblue;
+}
