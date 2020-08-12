@@ -2,7 +2,6 @@ var addingWalls=false;
 var removingWalls=false;
 var solving=false;
 var flag=false;
-$('.solving').hide();
 
 var startCoordinates='0-0';
 var endCoordinates='21-49';
@@ -21,9 +20,13 @@ $('.speed').change(function(){
   }
 });
 
-$('.maze').on('touchstart', function(e){
-  e.preventDefault();
-});
+// $('.speed').on('touchstart', function(e){
+//   console.log(e);
+//   $('.speed').click();
+// });
+// $('.maze').on('touchstart', function(e){
+//   e.preventDefault();
+// });
 
 $('.mazeData').mousedown(function(e){////////////////////////////////////////////////////////////////////////////////////////////////
   e.preventDefault();
@@ -60,7 +63,7 @@ $(document).mouseup(function(e){////////////////////////////////////////////////
 
 $(document).on("touchend", function(e){////////////////////////////////////////////////////////////////////////////////////////////////
   // console.log('mouseup occured');
-  e.preventDefault();
+  // e.preventDefault();
   if (addingWalls) {
     addingWalls=false;
   }

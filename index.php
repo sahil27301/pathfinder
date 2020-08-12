@@ -29,6 +29,7 @@
         <span class='speedControl'>
           <label>Select the animation speed:</label>
           <select class="speed">
+            <option value="0.1">LEGENDARY</option>
             <option value="1">INSANE</option>
             <option value="10">FAST</option>
             <option value="16" selected>NORMAL</option>
