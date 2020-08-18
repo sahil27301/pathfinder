@@ -249,29 +249,41 @@ function findPathBFS(){
     }
     coords=queue.shift();
     lastSpeed=2*speed*coords[2]
-    if (coords[0]==destinationX && coords[1]==destinationY){
-      flag=1;
-      return;
-    }
     if (coords[0] && !maze[coords[0]-1][coords[1]] && !(coords[0]-1==0 && coords[1]==0)) {
       maze[coords[0]-1][coords[1]]= coords[2]+1;
       addDelay(coords[0]-1, coords[1], 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0]-1, coords[1], coords[2]+1]);
+      if (coords[0]-1==destinationX && coords[1]==destinationY){
+        flag=1;
+        return;
+      }
     }
     if (coords[1] && !maze[coords[0]][coords[1]-1] && !(coords[0]==0 && coords[1]-1==0)) {
       maze[coords[0]][coords[1]-1]= coords[2]+1;
       addDelay(coords[0], coords[1]-1, 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0], coords[1]-1, coords[2]+1]);
+      if (coords[0]==destinationX && coords[1]-1==destinationY){
+        flag=1;
+        return;
+      }
     }
     if (coords[0]!=rows-1 && !maze[coords[0]+1][coords[1]] && !(coords[0]+1==0 && coords[1]==0)) {
       maze[coords[0]+1][coords[1]]= coords[2]+1;
       addDelay(coords[0]+1, coords[1], 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0]+1, coords[1], coords[2]+1]);
+      if (coords[0]+1==destinationX && coords[1]==destinationY){
+        flag=1;
+        return;
+      }
     }
     if (coords[1]!=columns-1 && !maze[coords[0]][coords[1]+1] && !(coords[0]==0 && coords[1]+1==0)) {
       maze[coords[0]][coords[1]+1]= coords[2]+1;
       addDelay(coords[0], coords[1]+1, 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0], coords[1]+1, coords[2]+1]);
+      if (coords[0]==destinationX && coords[1]+1==destinationY){
+        flag=1;
+        return;
+      }
     }
   }
 }
