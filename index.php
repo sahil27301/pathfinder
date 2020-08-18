@@ -26,7 +26,12 @@
       <div class='mazeControl'>
         <button type="button" class="find btn button btn-md">FIND</button>
         <button type="button" class="clear btn button btn-md">CLEAR BOARD</button>
-        <span class='speedControl'>
+        <br>
+          <label>Select the algorithm:</label>
+          <select class="alg">
+            <option value="1" selected>DFS</option>
+            <option value="2">BFS</option>
+          </select>
           <label>Select the animation speed:</label>
           <select class="speed">
             <option value="0.1">LEGENDARY</option>
@@ -36,7 +41,6 @@
             <option value="23">SLOW</option>
             <option value="30">SNAIL</option>
           </select>
-        </span>
       </div>
       <table class='mazeTable'>
         <?php

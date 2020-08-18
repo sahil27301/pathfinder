@@ -13,10 +13,17 @@ var destinationX=parseInt(endCoordinates.split('-')[0]);
 var destinationY=parseInt(endCoordinates.split('-')[1]);
 var currentX, currentY;
 var speed=15;
+var alg=1;
+var lastSpeed=0;
 
 $('.speed').change(function(){
   if (!solving) {
     speed=parseFloat($(this).val());
+  }
+});
+$('.alg').change(function(){
+  if (!solving) {
+    alg=parseFloat($(this).val());
   }
 });
 
@@ -109,16 +116,21 @@ $('.'+startCoordinates).addClass('startPoint');
 $('.'+endCoordinates).addClass('endPoint');
 
 
-var stack=['start']
+var stack=['start'];
+var queue=[];
 var maze=[];
 
 
 var delay=1800;
 
 function createArray(){
+  stack=["start"];
+  queue=[];
+  lastSpeed=0;
   $('.mazeData').each(function(){
     $(this).removeClass('active');
-  });flag=false;
+  });
+  flag=false;
   maze=[];
   delay=1800;
   currentX=startX;
@@ -165,7 +177,7 @@ function removeDelay(currentX, currentY, delay){
   }, delay);
 }
 
-function findPath(){
+function findPathDFS(){
   maze[currentX][currentY]=2;
   addDelay(currentX, currentY, delay);
   delay+=speed;
@@ -178,7 +190,7 @@ function findPath(){
   {
     currentY+=1;
     stack.push("right");
-    findPath();
+    findPathDFS();
     currentY-=1;
     if(flag)
     {
@@ -191,7 +203,7 @@ function findPath(){
   {
     currentX+=1;
     stack.push("down");
-    findPath();
+    findPathDFS();
     currentX-=1;
     if(flag)
     {
@@ -204,7 +216,7 @@ function findPath(){
   {
     currentY-=1;
     stack.push("left");
-    findPath();
+    findPathDFS();
     currentY+=1;
     if(flag)
     {
@@ -217,11 +229,11 @@ function findPath(){
   {
     currentX-=1;
     stack.push("up");
-    findPath();
+    findPathDFS();
     currentX+=1;
     if(flag)
     {
-        return;
+      return;
     }
     stack.pop();
   }
@@ -229,11 +241,47 @@ function findPath(){
   delay+=speed;
 }
 
+function findPathBFS(){
+  queue.push([0,0,0]);
+  while(true){
+    if (queue.length==0){
+      return;
+    }
+    coords=queue.shift();
+    lastSpeed=2*speed*coords[2]
+    if (coords[0]==destinationX && coords[1]==destinationY){
+      flag=1;
+      return;
+    }
+    if (coords[0] && !maze[coords[0]-1][coords[1]] && !(coords[0]-1==0 && coords[1]==0)) {
+      maze[coords[0]-1][coords[1]]= coords[2]+1;
+      addDelay(coords[0]-1, coords[1], 2*speed*(coords[2]+1)+delay);
+      queue.push([coords[0]-1, coords[1], coords[2]+1]);
+    }
+    if (coords[1] && !maze[coords[0]][coords[1]-1] && !(coords[0]==0 && coords[1]-1==0)) {
+      maze[coords[0]][coords[1]-1]= coords[2]+1;
+      addDelay(coords[0], coords[1]-1, 2*speed*(coords[2]+1)+delay);
+      queue.push([coords[0], coords[1]-1, coords[2]+1]);
+    }
+    if (coords[0]!=rows-1 && !maze[coords[0]+1][coords[1]] && !(coords[0]+1==0 && coords[1]==0)) {
+      maze[coords[0]+1][coords[1]]= coords[2]+1;
+      addDelay(coords[0]+1, coords[1], 2*speed*(coords[2]+1)+delay);
+      queue.push([coords[0]+1, coords[1], coords[2]+1]);
+    }
+    if (coords[1]!=columns-1 && !maze[coords[0]][coords[1]+1] && !(coords[0]==0 && coords[1]+1==0)) {
+      maze[coords[0]][coords[1]+1]= coords[2]+1;
+      addDelay(coords[0], coords[1]+1, 2*speed*(coords[2]+1)+delay);
+      queue.push([coords[0], coords[1]+1, coords[2]+1]);
+    }
+  }
+}
+
 
 $('.find').on('click touchstart', function(){
   if(!solving){
     $('.'+endCoordinates).removeClass('success');
     $('.speed').attr('disabled', true);
+    $('.alg').attr('disabled', true);
     $('.find').text('FINDING')
     setTimeout(function(){
       $('.find').text($('.find').text()+'.')
@@ -246,18 +294,22 @@ $('.find').on('click touchstart', function(){
     }, 1800);
     solving=true;
     createArray();
-    findPath();
+    if (alg=="1"){
+      findPathDFS();
+    }else if(alg=="2"){
+      findPathBFS();
+    }
     if (!flag) {
       setTimeout(function(){
         $('.find').text('NO SOLUTION');
         $('.find').addClass('error');
-      }, delay);
+      }, delay+lastSpeed);
     }
     setTimeout(function(){
       solving=false;
-      $('.'+endCoordinates).addClass('success');
       if (flag) {
         $('.find').text('FIND');
+        $('.'+endCoordinates).addClass('success');
       }else {
         setTimeout(function(){
           $('.find').text('FIND');
@@ -265,6 +317,7 @@ $('.find').on('click touchstart', function(){
         }, delay+1000);
       }
       $('.speed').attr('disabled', false);
-    }, delay);
+      $('.alg').attr('disabled', false);
+    }, delay+lastSpeed);
   }
 });

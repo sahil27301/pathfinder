@@ -20,20 +20,25 @@ ul {
 
 .maze {
   background-color: #b2ebf2;
-  padding: 2.5%;
+  padding: 1%;
 }
 
 .mazeControl {
-  text-align: left;
-  padding:0 10% 0 10%;
+  text-align: center;
+  padding:0 8% 0 8%;
 }
 
-.speedControl {
-  float: right;
+.speed, .alg {
+  background-color: #00b7c2;
 }
+
+/* .speedControl {
+  float: right;
+} */
 
 .button {
   background-color: #ade498;
+  font-weight: bold;
 }
 
 .button:focus {
