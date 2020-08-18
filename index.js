@@ -108,6 +108,7 @@ $('.clear').on('click touchstart', function(){
     $('.mazeData').each(function(){
       $(this).removeClass('wall');
       $(this).removeClass('active');
+      $(this).removeClass('shortestPath');
     });
   }
 });
@@ -129,6 +130,7 @@ function createArray(){
   lastSpeed=0;
   $('.mazeData').each(function(){
     $(this).removeClass('active');
+    $(this).removeClass('shortestPath');
   });
   flag=false;
   maze=[];
@@ -241,20 +243,52 @@ function findPathDFS(){
   delay+=speed;
 }
 
+function addPath(x, y, delay){
+  setTimeout(function(){
+    $('.'+x+'-'+y).addClass('shortestPath');
+  }, delay);
+}
+
+function drawPath(){
+  tempX=destinationX;
+  tempY=destinationY;
+  currentLength=maze[destinationX][destinationY];
+  while(currentLength){
+    if (tempX && maze[tempX-1][tempY]<maze[tempX][tempY] &&  maze[tempX-1][tempY]!=0 && !$('.'+(tempX-1)+'-'+tempY).hasClass('wall')) {
+      tempX-=1;
+      addPath(tempX, tempY, delay+(currentLength)*speed)
+    }else if (tempY && maze[tempX][tempY-1]<maze[tempX][tempY] &&  maze[tempX][tempY-1]!=0 && !$('.'+tempX+'-'+(tempY-1)).hasClass('wall')) {
+      tempY-=1;
+      addPath(tempX, tempY, delay+(currentLength)*speed)
+    }else if (tempX!=rows-1 && maze[tempX+1][tempY]<maze[tempX][tempY] &&  maze[tempX+1][tempY]!=0 && !$('.'+(tempX+1)+'-'+tempY).hasClass('wall')) {
+      tempX+=1;
+      addPath(tempX, tempY, delay+(currentLength)*speed)
+    }
+    else if (tempY!=columns-1 && maze[tempX][tempY+1]<maze[tempX][tempY] &&  maze[tempX][tempY+1]!=0 && !$('.'+tempX+'-'+(tempY+1)).hasClass('wall')) {
+      tempY+=1;
+      addPath(tempX, tempY, delay+(currentLength)*speed)
+    }
+    currentLength-=1;
+  }
+}
+
 function findPathBFS(){
   queue.push([0,0,0]);
   while(true){
     if (queue.length==0){
+      delay+=lastSpeed;
       return;
     }
     coords=queue.shift();
-    lastSpeed=2*speed*coords[2]
+    lastSpeed=2*speed*(coords[2]);
     if (coords[0] && !maze[coords[0]-1][coords[1]] && !(coords[0]-1==0 && coords[1]==0)) {
       maze[coords[0]-1][coords[1]]= coords[2]+1;
       addDelay(coords[0]-1, coords[1], 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0]-1, coords[1], coords[2]+1]);
       if (coords[0]-1==destinationX && coords[1]==destinationY){
         flag=1;
+        delay+=2*speed*(coords[2]+1);
+        drawPath();
         return;
       }
     }
@@ -264,6 +298,8 @@ function findPathBFS(){
       queue.push([coords[0], coords[1]-1, coords[2]+1]);
       if (coords[0]==destinationX && coords[1]-1==destinationY){
         flag=1;
+        delay+=2*speed*(coords[2]+1);
+        drawPath();
         return;
       }
     }
@@ -273,6 +309,8 @@ function findPathBFS(){
       queue.push([coords[0]+1, coords[1], coords[2]+1]);
       if (coords[0]+1==destinationX && coords[1]==destinationY){
         flag=1;
+        delay+=2*speed*(coords[2]+1);
+        drawPath();
         return;
       }
     }
@@ -282,6 +320,8 @@ function findPathBFS(){
       queue.push([coords[0], coords[1]+1, coords[2]+1]);
       if (coords[0]==destinationX && coords[1]+1==destinationY){
         flag=1;
+        delay+=2*speed*(coords[2]+1);
+        drawPath();
         return;
       }
     }
@@ -315,7 +355,7 @@ $('.find').on('click touchstart', function(){
       setTimeout(function(){
         $('.find').text('NO SOLUTION');
         $('.find').addClass('error');
-      }, delay+lastSpeed);
+      }, delay);
     }
     setTimeout(function(){
       solving=false;
@@ -326,10 +366,10 @@ $('.find').on('click touchstart', function(){
         setTimeout(function(){
           $('.find').text('FIND');
           $('.find').removeClass('error');
-        }, delay+1000);
+        }, delay+500);
       }
       $('.speed').attr('disabled', false);
       $('.alg').attr('disabled', false);
-    }, delay+lastSpeed);
+    }, delay);
   }
 });

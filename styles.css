@@ -97,6 +97,10 @@ ul {
   background-color: lightblue;
 }
 
+.shortestPath {
+  background-color: green;
+}
+
 .wall {
   background-color: blue;
 }
