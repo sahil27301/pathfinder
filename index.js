@@ -366,10 +366,10 @@ $('.find').on('click touchstart', function(){
         setTimeout(function(){
           $('.find').text('FIND');
           $('.find').removeClass('error');
-        }, delay+500);
+        },1000);
       }
       $('.speed').attr('disabled', false);
       $('.alg').attr('disabled', false);
-    }, delay);
+    }, delay+maze[destinationX][destinationY]*speed);
   }
 });
