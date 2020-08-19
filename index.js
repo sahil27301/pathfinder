@@ -2,6 +2,8 @@ var addingWalls=false;
 var removingWalls=false;
 var solving=false;
 var flag=false;
+var shiftingStart=false;
+var shiftingEnd=false;
 
 var startCoordinates='0-0';
 var endCoordinates='21-49';
@@ -16,6 +18,9 @@ var speed=15;
 var alg=1;
 var lastSpeed=0;
 
+$('.'+startCoordinates).addClass('startPoint');
+$('.'+endCoordinates).addClass('endPoint');
+
 $('.speed').change(function(){
   if (!solving) {
     speed=parseFloat($(this).val());
@@ -29,10 +34,15 @@ $('.alg').change(function(){
 
 $('.mazeData').mousedown(function(e){////////////////////////////////////////////////////////////////////////////////////////////////
   e.preventDefault();
-  if((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && !$(this).hasClass('wall')){
+  if($(this).hasClass('startPoint')){
+    shiftingStart=true;
+  }else if($(this).hasClass('endPoint')){
+    $(this).removeClass('success');
+    shiftingEnd=true;
+  }else if((!$(this).hasClass('startPoint')) && (!$(this).hasClass('endPoint')) && !solving && !$(this).hasClass('wall')){
     $(this).addClass('wall');
     addingWalls=true;
-  }else if ((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && $(this).hasClass('wall')) {
+  }else if ((!$(this).hasClass('startPoint')) && (!$(this).hasClass('endPoint')) && !solving && $(this).hasClass('wall')) {
     $(this).removeClass('wall');
     removingWalls=true;
   }
@@ -40,10 +50,15 @@ $('.mazeData').mousedown(function(e){///////////////////////////////////////////
 
 $('.mazeData').on("touchstart", function(e){////////////////////////////////////////////////////////////////////////////////////////////////
   e.preventDefault();
-  if((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && !$(this).hasClass('wall')){
+  if($(this).hasClass('startPoint')){
+    shiftingStart=true;
+  }else if($(this).hasClass('endPoint')){
+    $(this).removeClass('success');
+    shiftingEnd=true;
+  }else if((!$(this).hasClass('startPoint')) && (!$(this).hasClass('endPoint')) && !solving && !$(this).hasClass('wall')){
     $(this).addClass('wall');
     addingWalls=true;
-  }else if ((!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving && $(this).hasClass('wall')) {
+  }else if ((!$(this).hasClass('startPoint')) && (!$(this).hasClass('endPoint')) && !solving && $(this).hasClass('wall')) {
     $(this).removeClass('wall');
     removingWalls=true;
   }
@@ -51,6 +66,12 @@ $('.mazeData').on("touchstart", function(e){////////////////////////////////////
 
 $(document).mouseup(function(e){////////////////////////////////////////////////////////////////////////////////////////////////
   e.preventDefault();
+  if (shiftingStart) {
+    shiftingStart=false;
+  }
+  if (shiftingEnd) {
+    shiftingEnd=false;
+  }
   if (addingWalls) {
     addingWalls=false;
   }
@@ -61,6 +82,12 @@ $(document).mouseup(function(e){////////////////////////////////////////////////
 });
 
 $(document).on("touchend", function(e){////////////////////////////////////////////////////////////////////////////////////////////////
+  if (shiftingStart) {
+    shiftingStart=false;
+  }
+  if (shiftingEnd) {
+    shiftingEnd=false;
+  }
   if (addingWalls) {
     addingWalls=false;
   }
@@ -75,9 +102,21 @@ $('.maze').mousemove(function(event){
 
 $('.mazeData').mousemove(function(event){
   event.preventDefault();
-  if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
+  if (shiftingStart && !$(this).hasClass('endPoint') && !solving){
+    $(this).removeClass('wall');
+    $(this).removeClass('active');
+    $(this).removeClass('shortestPath');
+    $('.startPoint').removeClass('startPoint');
+    $(this).addClass('startPoint');
+  }else if (shiftingEnd && !$(this).hasClass('startPoint') && !solving){
+    $(this).removeClass('wall');
+    $(this).removeClass('active');
+    $(this).removeClass('shortestPath');
+    $('.endPoint').removeClass('endPoint');
+    $(this).addClass('endPoint');
+  }else if (addingWalls && (!$(this).hasClass('startPoint')) && (!$(this).hasClass('endPoint')) && !solving) {
     $(this).addClass('wall');
-  }else if (removingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
+  }else if (removingWalls && (!$(this).hasClass('startPoint')) && (!$(this).hasClass('endPoint')) && !solving) {
     $(this).removeClass('wall');
   }
 });
@@ -91,20 +130,32 @@ $('.mazeData').on('touchmove', function(e)
   mouseEvent.initMouseEvent(mouseEv, true, true, window, 1, theTouch.screenX, theTouch.screenY, theTouch.clientX, theTouch.clientY, false, false, false, false, 0, null);
   theTouch.target.dispatchEvent(mouseEvent);
   let elem = document.elementFromPoint(mouseEvent.clientX, mouseEvent.clientY);
-    if ($(elem).hasClass('mazeData')) {
-      if (addingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
-        $(elem).addClass('wall');
-      }else if (removingWalls && (!$(this).hasClass(startCoordinates)) && (!$(this).hasClass(endCoordinates)) && !solving) {
-        $(elem).removeClass('wall');
-      }
+  if ($(elem).hasClass('mazeData')) {
+    if (shiftingStart && !$(elem).hasClass('endPoint') && !solving){
+      $(elem).removeClass('wall');
+      $(elem).removeClass('active');
+      $(elem).removeClass('shortestPath');
+      $('.startPoint').removeClass('startPoint');
+      $(elem).addClass('startPoint');
+    }else if (shiftingEnd && !$(elem).hasClass('startPoint') && !solving){
+      $(elem).removeClass('wall');
+      $(elem).removeClass('active');
+      $(elem).removeClass('shortestPath');
+      $('.endPoint').removeClass('endPoint');
+      $(elem).addClass('endPoint');
+    }if (addingWalls && (!$(elem).hasClass('startPoint')) && (!$(elem).hasClass('endPoint')) && !solving) {
+      $(elem).addClass('wall');
+    }else if (removingWalls && (!$(elem).hasClass('startPoint')) && (!$(elem).hasClass('endPoint')) && !solving) {
+      $(elem).removeClass('wall');
     }
+  }
   e.preventDefault();
 });
 
 
 $('.clear').on('click touchstart', function(){
   if(!solving){
-    $('.'+endCoordinates).removeClass('success');
+    $('.'+'.endPoint').removeClass('success');
     $('.mazeData').each(function(){
       $(this).removeClass('wall');
       $(this).removeClass('active');
@@ -112,10 +163,6 @@ $('.clear').on('click touchstart', function(){
     });
   }
 });
-
-$('.'+startCoordinates).addClass('startPoint');
-$('.'+endCoordinates).addClass('endPoint');
-
 
 var stack=['start'];
 var queue=[];
@@ -135,6 +182,12 @@ function createArray(){
   flag=false;
   maze=[];
   delay=1800;
+  startCoordinates=document.querySelector('.startPoint').classList[1];
+  endCoordinates=document.querySelector('.endPoint').classList[1];
+  startX=parseInt(startCoordinates.split('-')[0]);
+  startY=parseInt(startCoordinates.split('-')[1]);
+  destinationX=parseInt(endCoordinates.split('-')[0]);
+  destinationY=parseInt(endCoordinates.split('-')[1]);
   currentX=startX;
   currentY=startY;
   for (var i = 0; i < rows; i++) {
@@ -273,7 +326,7 @@ function drawPath(){
 }
 
 function findPathBFS(){
-  queue.push([0,0,0]);
+  queue.push([startX, startY, 0]);
   while(true){
     if (queue.length==0){
       delay+=lastSpeed;
@@ -281,7 +334,7 @@ function findPathBFS(){
     }
     coords=queue.shift();
     lastSpeed=2*speed*(coords[2]);
-    if (coords[0] && !maze[coords[0]-1][coords[1]] && !(coords[0]-1==0 && coords[1]==0)) {
+    if (coords[0] && !maze[coords[0]-1][coords[1]] && !(coords[0]-1==startX && coords[1]==startY)) {
       maze[coords[0]-1][coords[1]]= coords[2]+1;
       addDelay(coords[0]-1, coords[1], 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0]-1, coords[1], coords[2]+1]);
@@ -292,7 +345,7 @@ function findPathBFS(){
         return;
       }
     }
-    if (coords[1] && !maze[coords[0]][coords[1]-1] && !(coords[0]==0 && coords[1]-1==0)) {
+    if (coords[1] && !maze[coords[0]][coords[1]-1] && !(coords[0]==startX && coords[1]-1==startY)) {
       maze[coords[0]][coords[1]-1]= coords[2]+1;
       addDelay(coords[0], coords[1]-1, 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0], coords[1]-1, coords[2]+1]);
@@ -303,7 +356,7 @@ function findPathBFS(){
         return;
       }
     }
-    if (coords[0]!=rows-1 && !maze[coords[0]+1][coords[1]] && !(coords[0]+1==0 && coords[1]==0)) {
+    if (coords[0]!=rows-1 && !maze[coords[0]+1][coords[1]] && !(coords[0]+1==startX && coords[1]==startY)) {
       maze[coords[0]+1][coords[1]]= coords[2]+1;
       addDelay(coords[0]+1, coords[1], 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0]+1, coords[1], coords[2]+1]);
@@ -314,7 +367,7 @@ function findPathBFS(){
         return;
       }
     }
-    if (coords[1]!=columns-1 && !maze[coords[0]][coords[1]+1] && !(coords[0]==0 && coords[1]+1==0)) {
+    if (coords[1]!=columns-1 && !maze[coords[0]][coords[1]+1] && !(coords[0]==startX && coords[1]+1==startY)) {
       maze[coords[0]][coords[1]+1]= coords[2]+1;
       addDelay(coords[0], coords[1]+1, 2*speed*(coords[2]+1)+delay);
       queue.push([coords[0], coords[1]+1, coords[2]+1]);

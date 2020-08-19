@@ -72,20 +72,6 @@ ul {
   border-color: black;
 }
 
-.startPoint {
-  background-image:url(images/start.jpg);
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: center;
-}
-
-.endPoint {
-  background-image:url(images/end.jpg);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
 .success {
   background-image:url(images/success.jpg);
   background-repeat: no-repeat;
@@ -105,6 +91,16 @@ ul {
   background-color: blue;
 }
 
-.flash {
-  background-color: darkblue;
+.startPoint {
+  background-image:url(images/start.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.endPoint {
+  background-image:url(images/end.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
