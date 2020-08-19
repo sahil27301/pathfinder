@@ -155,7 +155,7 @@ $('.mazeData').on('touchmove', function(e)
 
 $('.clear').on('click touchstart', function(){
   if(!solving){
-    $('.'+'.endPoint').removeClass('success');
+    $('.endPoint').removeClass('success');
     $('.mazeData').each(function(){
       $(this).removeClass('wall');
       $(this).removeClass('active');
