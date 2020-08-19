@@ -72,13 +72,6 @@ ul {
   border-color: black;
 }
 
-.success {
-  background-image:url(images/success.jpg);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
 .active {
   background-color: lightblue;
 }
@@ -100,6 +93,13 @@ ul {
 
 .endPoint {
   background-image:url(images/end.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.success {
+  background-image:url(images/success.jpg);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

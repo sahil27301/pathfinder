@@ -414,7 +414,7 @@ $('.find').on('click touchstart', function(){
       solving=false;
       if (flag) {
         $('.find').text('FIND');
-        $('.'+endCoordinates).addClass('success');
+        $('.endPoint').addClass('success');
       }else {
         setTimeout(function(){
           $('.find').text('FIND');
