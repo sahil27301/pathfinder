@@ -206,7 +206,6 @@ function addDelay(currentX, currentY, delay){
   setTimeout(function(){
     if (!(currentX==startX && currentY==startY) && !(currentX==destinationX && currentY==destinationY)) {
       $('.'+currentX+'-'+currentY).addClass('active');
-      console.log('adding to '+'.'+currentX+'-'+currentY);
       $('.'+currentX+'-'+currentY).addClass('shortestPath');
       setTimeout(function(){
         $('.'+currentX+'-'+currentY).removeClass('shortestPath');
