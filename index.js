@@ -201,34 +201,28 @@ function createArray(){
     }
   }
 }
-function activate(currentX, currentY){
-  if (!(currentX==startX && currentY==startY) && !(currentX==destinationX && currentY==destinationY)) {
-    $('.'+currentX+'-'+currentY).addClass('active');
-    // $('.'+currentX+'-'+currentY).addClass('flash');
-    // setTimeout(function(){
-    //   $('.'+currentX+'-'+currentY).removeClass('flash');
-    // }, 25);
-  }
-}
-
-function deactivate(currentX, currentY){
-  if (!(currentX==startX && currentY==startY) && !(currentX==destinationX && currentY==destinationY)) {
-    $('.'+currentX+'-'+currentY).removeClass('active');
-  //   $('.'+currentX+'-'+currentY).addClass('flash');
-  //   setTimeout(function(){
-  //     $('.'+currentX+'-'+currentY).removeClass('flash');
-  //   }, 25);
-  }
-}
 
 function addDelay(currentX, currentY, delay){
   setTimeout(function(){
-    activate(currentX, currentY);
+    if (!(currentX==startX && currentY==startY) && !(currentX==destinationX && currentY==destinationY)) {
+      $('.'+currentX+'-'+currentY).addClass('active');
+      console.log('adding to '+'.'+currentX+'-'+currentY);
+      $('.'+currentX+'-'+currentY).addClass('shortestPath');
+      setTimeout(function(){
+        $('.'+currentX+'-'+currentY).removeClass('shortestPath');
+      }, 2*speed);
+    }
   }, delay);
 }
 function removeDelay(currentX, currentY, delay){
   setTimeout(function(){
-    deactivate(currentX, currentY);
+    if (!(currentX==startX && currentY==startY) && !(currentX==destinationX && currentY==destinationY)) {
+      $('.'+currentX+'-'+currentY).removeClass('active');
+      $('.'+currentX+'-'+currentY).addClass('shortestPath');
+      setTimeout(function(){
+        $('.'+currentX+'-'+currentY).removeClass('shortestPath');
+      }, 2*speed);
+    }
   }, delay);
 }
 
@@ -303,9 +297,9 @@ function addPath(x, y, delay){
 }
 
 function drawPath(){
-  tempX=destinationX;
-  tempY=destinationY;
-  currentLength=maze[destinationX][destinationY];
+  let tempX=destinationX;
+  let tempY=destinationY;
+  let currentLength=maze[destinationX][destinationY];
   while(currentLength){
     if (tempX && maze[tempX-1][tempY]<maze[tempX][tempY] &&  maze[tempX-1][tempY]!=0 && !$('.'+(tempX-1)+'-'+tempY).hasClass('wall')) {
       tempX-=1;
