@@ -31,15 +31,16 @@
           <select class="alg">
             <option value="1" selected>DFS</option>
             <option value="2">BFS</option>
+            <option value="3">SahilSearch</option>
           </select>
           <label>Select the animation speed:</label>
           <select class="speed">
-            <option value="0.1">LEGENDARY</option>
-            <option value="1">INSANE</option>
-            <option value="10">FAST</option>
-            <option value="16" selected>NORMAL</option>
-            <option value="23">SLOW</option>
-            <option value="30">SNAIL</option>
+            <option value="1">LEGENDARY</option>
+            <option value="10">INSANE</option>
+            <option value="15">FAST</option>
+            <option value="20" selected>NORMAL</option>
+            <option value="30">SLOW</option>
+            <option value="50">SNAIL</option>
           </select>
       </div>
       <table class='mazeTable'>
