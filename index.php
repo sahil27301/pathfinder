@@ -35,7 +35,6 @@
           </select>
           <label>Select the animation speed:</label>
           <select class="speed">
-            <option value="1">LEGENDARY</option>
             <option value="10">INSANE</option>
             <option value="15">FAST</option>
             <option value="20" selected>NORMAL</option>
