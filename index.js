@@ -534,7 +534,7 @@ $(document).ready(function () {
     tempY = y2;
     maxAdd =
       (currentLength + 1) * speed * ((currentLength + 1) * speed > maxAdd) +
-      maxAdd * (maxAdd > delay + (currentLength + 1) * speed);
+      maxAdd * (maxAdd > (currentLength + 1) * speed);
     addPath(tempX, tempY, delay + (currentLength + 1) * speed);
     while (currentLength) {
       if (
@@ -600,12 +600,8 @@ $(document).ready(function () {
         }
         if (!maze[coords1[0] - 1][coords1[1]]) {
           maze[coords1[0] - 1][coords1[1]] = coords1[2] + 1;
-          addDelay(
-            coords1[0] - 1,
-            coords1[1],
-            delay
-          );
-          delay+=speed;
+          addDelay(coords1[0] - 1, coords1[1], delay);
+          delay += speed;
           queue1.push([coords1[0] - 1, coords1[1], coords1[2] + 1]);
           visited[coords1[0] - 1][coords1[1]] = 1;
         }
@@ -619,12 +615,8 @@ $(document).ready(function () {
         }
         if (!maze[coords1[0]][coords1[1] - 1]) {
           maze[coords1[0]][coords1[1] - 1] = coords1[2] + 1;
-          addDelay(
-            coords1[0],
-            coords1[1] - 1,
-            delay
-          );
-          delay+=speed;
+          addDelay(coords1[0], coords1[1] - 1, delay);
+          delay += speed;
           queue1.push([coords1[0], coords1[1] - 1, coords1[2] + 1]);
           visited[coords1[0]][coords1[1] - 1] = 1;
         }
@@ -641,12 +633,8 @@ $(document).ready(function () {
         }
         if (!maze[coords1[0] + 1][coords1[1]]) {
           maze[coords1[0] + 1][coords1[1]] = coords1[2] + 1;
-          addDelay(
-            coords1[0] + 1,
-            coords1[1],
-            delay
-          );
-          delay+=speed;
+          addDelay(coords1[0] + 1, coords1[1], delay);
+          delay += speed;
           queue1.push([coords1[0] + 1, coords1[1], coords1[2] + 1]);
           visited[coords1[0] + 1][coords1[1]] = 1;
         }
@@ -663,12 +651,8 @@ $(document).ready(function () {
         }
         if (!maze[coords1[0]][coords1[1] + 1]) {
           maze[coords1[0]][coords1[1] + 1] = coords1[2] + 1;
-          addDelay(
-            coords1[0],
-            coords1[1] + 1,
-            delay
-          );
-          delay+=speed;
+          addDelay(coords1[0], coords1[1] + 1, delay);
+          delay += speed;
           queue1.push([coords1[0], coords1[1] + 1, coords1[2] + 1]);
           visited[coords1[0]][coords1[1] + 1] = 1;
         }
@@ -685,12 +669,8 @@ $(document).ready(function () {
         }
         if (!maze[coords2[0] - 1][coords2[1]]) {
           maze[coords2[0] - 1][coords2[1]] = coords2[2] + 1;
-          addDelay(
-            coords2[0] - 1,
-            coords2[1],
-            delay
-          );
-          delay+=speed;
+          addDelay(coords2[0] - 1, coords2[1], delay);
+          delay += speed;
           queue2.push([coords2[0] - 1, coords2[1], coords2[2] + 1]);
           visited[coords2[0] - 1][coords2[1]] = 2;
         }
@@ -707,12 +687,8 @@ $(document).ready(function () {
         }
         if (!maze[coords2[0]][coords2[1] - 1]) {
           maze[coords2[0]][coords2[1] - 1] = coords2[2] + 1;
-          addDelay(
-            coords2[0],
-            coords2[1] - 1,
-            delay
-          );
-          delay+=speed;
+          addDelay(coords2[0], coords2[1] - 1, delay);
+          delay += speed;
           queue2.push([coords2[0], coords2[1] - 1, coords2[2] + 1]);
           visited[coords2[0]][coords2[1] - 1] = 2;
         }
@@ -723,18 +699,14 @@ $(document).ready(function () {
       ) {
         if (visited[coords2[0] + 1][coords2[1]] == 1) {
           flag = 1;
-          delay+=speed;
+          delay += speed;
           mergeFrom(coords2[0] + 1, coords2[1], coords2[0], coords2[1]);
           return;
         }
         if (!maze[coords2[0] + 1][coords2[1]]) {
           maze[coords2[0] + 1][coords2[1]] = coords2[2] + 1;
-          addDelay(
-            coords2[0] + 1,
-            coords2[1],
-            delay
-          );
-          delay+=speed;
+          addDelay(coords2[0] + 1, coords2[1], delay);
+          delay += speed;
           queue2.push([coords2[0] + 1, coords2[1], coords2[2] + 1]);
           visited[coords2[0] + 1][coords2[1]] = 2;
         }
@@ -745,18 +717,14 @@ $(document).ready(function () {
       ) {
         if (visited[coords2[0]][coords2[1] + 1] == 1) {
           flag = 1;
-          delay+=speed;
+          delay += speed;
           mergeFrom(coords2[0], coords2[1] - 1, coords2[0], coords2[1]);
           return;
         }
         if (!maze[coords2[0]][coords2[1] + 1]) {
           maze[coords2[0]][coords2[1] + 1] = coords2[2] + 1;
-          addDelay(
-            coords2[0],
-            coords2[1] + 1,
-            delay
-          );
-          delay+=speed;
+          addDelay(coords2[0], coords2[1] + 1, delay);
+          delay += speed;
           queue2.push([coords2[0], coords2[1] + 1, coords2[2] + 1]);
           visited[coords2[0]][coords2[1] + 1] = 2;
         }
@@ -782,7 +750,7 @@ $(document).ready(function () {
         return;
       }
       while (queue1[0][2] == currq1) {
-        coords1=queue1.shift();
+        coords1 = queue1.shift();
         lastSpeed = 2 * speed * coords1[2];
         if (coords1[0] && !(coords1[0] - 1 == startX && coords1[1] == startY)) {
           if (visited[coords1[0] - 1][coords1[1]] == 2) {
@@ -862,12 +830,12 @@ $(document).ready(function () {
             visited[coords1[0]][coords1[1] + 1] = 1;
           }
         }
-        if (queue1.length==0) {
+        if (queue1.length == 0) {
           return;
         }
       }
-      currq1=queue1[0][2];
-      while(queue2[0][2]==currq2){
+      currq1 = queue1[0][2];
+      while (queue2[0][2] == currq2) {
         coords2 = queue2.shift();
         if (
           coords2[0] &&
@@ -953,11 +921,11 @@ $(document).ready(function () {
             visited[coords2[0]][coords2[1] + 1] = 2;
           }
         }
-        if (queue2.length==0) {
+        if (queue2.length == 0) {
           return;
         }
       }
-      currq2=queue2[0][2];
+      currq2 = queue2[0][2];
     }
   }
 
