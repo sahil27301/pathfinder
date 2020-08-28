@@ -831,6 +831,7 @@ $(document).ready(function () {
           }
         }
         if (queue1.length == 0) {
+          delay += lastSpeed;
           return;
         }
       }
@@ -923,6 +924,7 @@ $(document).ready(function () {
         }
         if (queue2.length == 0) {
           return;
+          delay += lastSpeed;
         }
       }
       currq2 = queue2[0][2];
