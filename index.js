@@ -718,7 +718,7 @@ $(document).ready(function () {
         if (visited[coords2[0]][coords2[1] + 1] == 1) {
           flag = 1;
           delay += speed;
-          mergeFrom(coords2[0], coords2[1] - 1, coords2[0], coords2[1]);
+          mergeFrom(coords2[0], coords2[1] + 1, coords2[0], coords2[1]);
           return;
         }
         if (!maze[coords2[0]][coords2[1] + 1]) {
