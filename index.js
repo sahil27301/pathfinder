@@ -7,6 +7,7 @@ var shiftingEnd = false;
 var stack = ["start"];
 var queue1 = [];
 var queue2 = [];
+var priorityQueue = [];
 var maze = [];
 var delay = 1800;
 var startCoordinates = "0-0";
@@ -237,6 +238,7 @@ $(document).ready(function () {
     stack = ["start"];
     queue1 = [];
     queue2 = [];
+    priorityQueue = [];
     lastSpeed = 0;
     $(".mazeData").each(function () {
       $(this).removeClass("active");
@@ -931,6 +933,90 @@ $(document).ready(function () {
     }
   }
 
+  function enqueue(x, y, p) {
+    // let f=Math.sqrt((x-destinationX)*(x-destinationX)+(y-destinationY)*(y-destinationY)) + p;
+    f=p+Math.abs(x-destinationX)+Math.abs(y-destinationY);
+    if (priorityQueue.length == 0) {
+      priorityQueue.push([x, y, p, f]);
+    } else {
+      let i=0;
+      while(i!=priorityQueue.length && priorityQueue[i][3]<=f){
+        i+=1;
+      }
+      priorityQueue.splice(i, 0, [x, y, p, f]);
+    }
+  }
+
+  function aStar() {
+    enqueue(startX, startY, 0);
+    while (true){
+      if(priorityQueue.length==0){
+        return;
+      }
+      coords=priorityQueue.shift();
+      if (
+        coords[0] &&
+        !maze[coords[0] - 1][coords[1]] &&
+        !(coords[0] - 1 == startX && coords[1] == startY)
+      ) {
+        maze[coords[0] - 1][coords[1]] = coords[2] + 1;
+        addDelay(coords[0] - 1, coords[1], delay);
+        delay+=speed;
+        enqueue(coords[0] - 1, coords[1], coords[2] + 1);
+        if (coords[0] - 1 == destinationX && coords[1] == destinationY) {
+          flag = 1;
+          drawPath();
+          return;
+        }
+      }
+      if (
+        coords[1] &&
+        !maze[coords[0]][coords[1] - 1] &&
+        !(coords[0] == startX && coords[1] - 1 == startY)
+      ) {
+        maze[coords[0]][coords[1] - 1] = coords[2] + 1;
+        addDelay(coords[0], coords[1] - 1, delay);
+        delay+=speed;
+        enqueue(coords[0], coords[1] - 1, coords[2] + 1);
+        if (coords[0] == destinationX && coords[1] - 1 == destinationY) {
+          flag = 1;
+          drawPath();
+          return;
+        }
+      }
+      if (
+        coords[0] != rows - 1 &&
+        !maze[coords[0] + 1][coords[1]] &&
+        !(coords[0] + 1 == startX && coords[1] == startY)
+      ) {
+        maze[coords[0] + 1][coords[1]] = coords[2] + 1;
+        addDelay(coords[0] + 1, coords[1], delay);
+        delay+=speed;
+        enqueue(coords[0] + 1, coords[1], coords[2] + 1);
+        if (coords[0] + 1 == destinationX && coords[1] == destinationY) {
+          flag = 1;
+          drawPath();
+          return;
+        }
+      }
+      if (
+        coords[1] != columns - 1 &&
+        !maze[coords[0]][coords[1] + 1] &&
+        !(coords[0] == startX && coords[1] + 1 == startY)
+      ) {
+        maze[coords[0]][coords[1] + 1] = coords[2] + 1;
+        addDelay(coords[0], coords[1] + 1, delay);
+        delay+=speed;
+        enqueue(coords[0], coords[1] + 1, coords[2] + 1);
+        if (coords[0] == destinationX && coords[1] + 1 == destinationY) {
+          flag = 1;
+          drawPath();
+          return;
+        }
+      }
+    }
+  }
+
   $(".find").on("click touchstart", function () {
     if (!solving) {
       $("." + endCoordinates).removeClass("success");
@@ -953,8 +1039,10 @@ $(document).ready(function () {
       } else if (alg == "2") {
         findPathBFS();
       } else if (alg == "3") {
-        SSSN();
+        aStar();
       } else if (alg == "4") {
+        SSSN();
+      } else if (alg == "5") {
         SSSD();
       }
       if (!flag) {

@@ -31,8 +31,9 @@
           <select class="alg">
             <option value="1" selected>DFS</option>
             <option value="2">BFS</option>
-            <option value="3">sahilSN</option>
-            <option value="4">sahilSD</option>
+            <option value="3">A*</option>
+            <option value="4">sahilSN</option>
+            <option value="5">sahilSD</option>
           </select>
           <label>Select the animation speed:</label>
           <select class="speed">
