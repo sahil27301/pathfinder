@@ -389,7 +389,7 @@ $(document).ready(function () {
         maze[tempX - 1][tempY] < maze[tempX][tempY] &&
         maze[tempX - 1][tempY] != 0 &&
         !$("." + (tempX - 1) + "-" + tempY).hasClass("wall") &&
-        visited[tempX-1][tempY]==1
+        visited[tempX - 1][tempY] == 1
       ) {
         tempX -= 1;
         addPath(tempX, tempY, delay + currentLength * speed);
@@ -398,7 +398,7 @@ $(document).ready(function () {
         maze[tempX][tempY - 1] < maze[tempX][tempY] &&
         maze[tempX][tempY - 1] != 0 &&
         !$("." + tempX + "-" + (tempY - 1)).hasClass("wall") &&
-        visited[tempX][tempY-1]==1
+        visited[tempX][tempY - 1] == 1
       ) {
         tempY -= 1;
         addPath(tempX, tempY, delay + currentLength * speed);
@@ -406,10 +406,9 @@ $(document).ready(function () {
         tempX != rows - 1 &&
         maze[tempX + 1][tempY] < maze[tempX][tempY] &&
         maze[tempX + 1][tempY] != 0 &&
-        !$("." + (tempX + 1) + "-" + tempY).hasClass("wall")
-         &&
         !$("." + (tempX + 1) + "-" + tempY).hasClass("wall") &&
-        visited[tempX+1][tempY]==1
+        !$("." + (tempX + 1) + "-" + tempY).hasClass("wall") &&
+        visited[tempX + 1][tempY] == 1
       ) {
         tempX += 1;
         addPath(tempX, tempY, delay + currentLength * speed);
@@ -418,7 +417,7 @@ $(document).ready(function () {
         maze[tempX][tempY + 1] < maze[tempX][tempY] &&
         maze[tempX][tempY + 1] != 0 &&
         !$("." + tempX + "-" + (tempY + 1)).hasClass("wall") &&
-        visited[tempX][tempY+1]==1
+        visited[tempX][tempY + 1] == 1
       ) {
         tempY += 1;
         addPath(tempX, tempY, delay + currentLength * speed);
@@ -429,7 +428,7 @@ $(document).ready(function () {
 
   function findPathBFS() {
     queue1.push([startX, startY, 0]);
-    visited[startX][startY]=1;
+    visited[startX][startY] = 1;
     while (true) {
       if (queue1.length == 0) {
         delay += lastSpeed;
@@ -445,7 +444,7 @@ $(document).ready(function () {
         maze[coords[0] - 1][coords[1]] = coords[2] + 1;
         addDelay(coords[0] - 1, coords[1], 2 * speed * (coords[2] + 1) + delay);
         queue1.push([coords[0] - 1, coords[1], coords[2] + 1]);
-        visited[coords[0]-1][coords[1]]=1;
+        visited[coords[0] - 1][coords[1]] = 1;
         if (coords[0] - 1 == destinationX && coords[1] == destinationY) {
           flag = 1;
           delay += 2 * speed * (coords[2] + 1);
@@ -461,7 +460,7 @@ $(document).ready(function () {
         maze[coords[0]][coords[1] - 1] = coords[2] + 1;
         addDelay(coords[0], coords[1] - 1, 2 * speed * (coords[2] + 1) + delay);
         queue1.push([coords[0], coords[1] - 1, coords[2] + 1]);
-        visited[coords[0]][coords[1]-1]=1;
+        visited[coords[0]][coords[1] - 1] = 1;
         if (coords[0] == destinationX && coords[1] - 1 == destinationY) {
           flag = 1;
           delay += 2 * speed * (coords[2] + 1);
@@ -477,7 +476,7 @@ $(document).ready(function () {
         maze[coords[0] + 1][coords[1]] = coords[2] + 1;
         addDelay(coords[0] + 1, coords[1], 2 * speed * (coords[2] + 1) + delay);
         queue1.push([coords[0] + 1, coords[1], coords[2] + 1]);
-        visited[coords[0]+1][coords[1]]=1;
+        visited[coords[0] + 1][coords[1]] = 1;
         if (coords[0] + 1 == destinationX && coords[1] == destinationY) {
           flag = 1;
           delay += 2 * speed * (coords[2] + 1);
@@ -493,7 +492,7 @@ $(document).ready(function () {
         maze[coords[0]][coords[1] + 1] = coords[2] + 1;
         addDelay(coords[0], coords[1] + 1, 2 * speed * (coords[2] + 1) + delay);
         queue1.push([coords[0], coords[1] + 1, coords[2] + 1]);
-        visited[coords[0]][coords[1]+1]=1;
+        visited[coords[0]][coords[1] + 1] = 1;
         if (coords[0] == destinationX && coords[1] + 1 == destinationY) {
           flag = 1;
           delay += 2 * speed * (coords[2] + 1);
@@ -940,45 +939,45 @@ $(document).ready(function () {
   }
 
   function enqueue(x, y, p) {
-    let f=p+Math.abs(x-destinationX)+Math.abs(y-destinationY);
-    //reward paths that are closer to the straight line connectong start and end
-    //leads to potentially non-shortest path
-    // dx1 = x - destinationX
-    // dy1 = y - destinationY
-    // dx2 = startX - destinationX
-    // dy2 = startY - destinationY
-    // let cross = Math.abs(dx1*dy2 - dx2*dy1)
-    // f += cross*0.001
+    let f = p + Math.abs(x - destinationX) + Math.abs(y - destinationY);
     if (priorityQueue.length == 0) {
       priorityQueue.push([x, y, p, f]);
     } else {
-      let i=0;
-      while(i!=priorityQueue.length && priorityQueue[i][3]<f){
+      let i = 0;
+      let check=0
+      while (i != priorityQueue.length) {
+        if (priorityQueue[i][0] == x && priorityQueue[i][1] == y) {
+          priorityQueue.splice(i, 1);
+          break;
+        }
         i+=1;
       }
-      priorityQueue.splice(i, 0, [x, y, p, f]);
+        i=0;
+        while (i != priorityQueue.length && priorityQueue[i][3] < f) {
+          i += 1;
+        }
+        priorityQueue.splice(i, 0, [x, y, p, f]);
     }
   }
 
   function aStar() {
     enqueue(startX, startY, 0);
-    visited[startX][startY]=1;
-    while (true){
-      if(priorityQueue.length==0){
+    visited[startX][startY] = 1;
+    while (true) {
+      if (priorityQueue.length == 0) {
         return;
       }
-      coords=priorityQueue.shift();
-      visited[coords[0]][coords[1]]=1;
+      coords = priorityQueue.shift();
+      visited[coords[0]][coords[1]] = 1;
       addDelay(coords[0], coords[1], delay);
-      delay+=speed;
+      delay += speed;
       if (
         coords[0] &&
-        !maze[coords[0] - 1][coords[1]] &&
+        (!maze[coords[0] - 1][coords[1]] ||
+          maze[coords[0] - 1][coords[1]] > coords[2] + 1) &&
         !(coords[0] - 1 == startX && coords[1] == startY)
       ) {
         maze[coords[0] - 1][coords[1]] = coords[2] + 1;
-        // addDelay(coords[0] - 1, coords[1], delay);
-        // delay+=speed;
         enqueue(coords[0] - 1, coords[1], coords[2] + 1);
         if (coords[0] - 1 == destinationX && coords[1] == destinationY) {
           flag = 1;
@@ -988,12 +987,11 @@ $(document).ready(function () {
       }
       if (
         coords[1] &&
-        !maze[coords[0]][coords[1] - 1] &&
+        (!maze[coords[0]][coords[1] - 1] ||
+          maze[coords[0]][coords[1] - 1] > coords[2] + 1) &&
         !(coords[0] == startX && coords[1] - 1 == startY)
       ) {
         maze[coords[0]][coords[1] - 1] = coords[2] + 1;
-        // addDelay(coords[0], coords[1] - 1, delay);
-        // delay+=speed;
         enqueue(coords[0], coords[1] - 1, coords[2] + 1);
         if (coords[0] == destinationX && coords[1] - 1 == destinationY) {
           flag = 1;
@@ -1003,12 +1001,11 @@ $(document).ready(function () {
       }
       if (
         coords[0] != rows - 1 &&
-        !maze[coords[0] + 1][coords[1]] &&
+        (!maze[coords[0] + 1][coords[1]] ||
+          maze[coords[0] + 1][coords[1]] > coords[2] + 1) &&
         !(coords[0] + 1 == startX && coords[1] == startY)
       ) {
         maze[coords[0] + 1][coords[1]] = coords[2] + 1;
-        // addDelay(coords[0] + 1, coords[1], delay);
-        // delay+=speed;
         enqueue(coords[0] + 1, coords[1], coords[2] + 1);
         if (coords[0] + 1 == destinationX && coords[1] == destinationY) {
           flag = 1;
@@ -1018,12 +1015,11 @@ $(document).ready(function () {
       }
       if (
         coords[1] != columns - 1 &&
-        !maze[coords[0]][coords[1] + 1] &&
+        (!maze[coords[0]][coords[1] + 1] ||
+          maze[coords[0]][coords[1] + 1] > coords[2] + 1) &&
         !(coords[0] == startX && coords[1] + 1 == startY)
       ) {
         maze[coords[0]][coords[1] + 1] = coords[2] + 1;
-        // addDelay(coords[0], coords[1] + 1, delay);
-        // delay+=speed;
         enqueue(coords[0], coords[1] + 1, coords[2] + 1);
         if (coords[0] == destinationX && coords[1] + 1 == destinationY) {
           flag = 1;
