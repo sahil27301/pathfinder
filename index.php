@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="container-fluid heading">
-      <h1>Sahil's Pathfinding Visualiser</h1>
+      <h1>Pathfinding Visualiser</h1>
     </div>
     <div class="container-fluid maze">
       <div class='mazeControl'>
