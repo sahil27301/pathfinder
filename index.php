@@ -13,36 +13,33 @@
     <div class="container-fluid heading">
       <h1>Sahil's Pathfinding Visualiser</h1>
     </div>
-    <!-- <div class="container-fluid instructions">
-      <h3>How to</h3>
-      <ul>
-        <li>This page will help visualise a DFS pathfinding algorithm.</li>
-        <li>You can set the start point, end point, and walls below.</li>
-        <li>Walls will not allow a path to go through them.</li>
-        <li>Click on find to start searching for a path.</li>
-      </ul>
-    </div> -->
     <div class="container-fluid maze">
       <div class='mazeControl'>
         <button type="button" class="find btn button btn-md">FIND</button>
         <button type="button" class="clear btn button btn-md">CLEAR BOARD</button>
         <br>
+        <div>
           <label>Select the algorithm:</label>
           <select class="alg">
             <option value="1" selected>DFS</option>
             <option value="2">BFS</option>
             <option value="3">A*</option>
-            <option value="4">sahilSN</option>
-            <option value="5">sahilSD</option>
+            <option value="4">Bidirectional SN</option>
+            <option value="5">Bidirectional SD</option>
           </select>
           <label>Select the animation speed:</label>
           <select class="speed">
-            <option value="10">INSANE</option>
-            <option value="15">FAST</option>
-            <option value="20" selected>NORMAL</option>
-            <option value="30">SLOW</option>
-            <option value="50">SNAIL</option>
+            <!-- <option value="10">INSANE</option> -->
+            <option value="35">FAST</option>
+            <option value="40" selected>NORMAL</option>
+            <option value="50">SLOW</option>
+            <option value="60">SNAIL</option>
           </select>
+          <span>Nodes Visited:</span>
+          <span id="visitedCount">0</span>
+          <span>Path Length:</span>
+          <span id="pathLength">-</span>
+          </div>
       </div>
       <table class='mazeTable'>
         <?php

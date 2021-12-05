@@ -23,6 +23,8 @@ var speed = 20;
 var alg = 1;
 var lastSpeed = 0;
 let visited = [];
+let visitedNodeCount = 0;
+let pathLength = 0;
 for (let i = 0; i < rows; i++) {
   visited.push([]);
   for (let j = 0; j < columns; j++) {
@@ -274,6 +276,8 @@ $(document).ready(function () {
 
   function addDelay(currentX, currentY, delay) {
     setTimeout(function () {
+      ++visitedNodeCount;
+      $("#visitedCount").text(visitedNodeCount);
       if (
         !(currentX == startX && currentY == startY) &&
         !(currentX == destinationX && currentY == destinationY)
@@ -301,7 +305,8 @@ $(document).ready(function () {
     }, delay);
   }
 
-  function findPathDFS() {
+  function findPathDFS(firstCall = false) {
+    visitedNodeCount -= firstCall;
     maze[currentX][currentY] = 2;
     addDelay(currentX, currentY, delay);
     delay += speed;
@@ -375,8 +380,10 @@ $(document).ready(function () {
 
   function addPath(x, y, delay) {
     setTimeout(function () {
+      ++pathLength;
+      $("#pathLength").text(pathLength);
       $("." + x + "-" + y).addClass("shortestPath");
-    }, delay);
+    }, 1.5 * delay);
   }
 
   function drawPath() {
@@ -592,7 +599,7 @@ $(document).ready(function () {
     delay += maxAdd;
   }
 
-  function SSSN() {
+  function BSN() {
     queue1.push([startX, startY, 0]);
     queue2.push([destinationX, destinationY, 0]);
     visited[startX][startY] = 1;
@@ -744,7 +751,7 @@ $(document).ready(function () {
     }
   }
 
-  function SSSD() {
+  function BSD() {
     queue1.push([startX, startY, 0]);
     queue2.push([destinationX, destinationY, 0]);
     currq1 = 0;
@@ -944,19 +951,19 @@ $(document).ready(function () {
       priorityQueue.push([x, y, p, f]);
     } else {
       let i = 0;
-      let check=0
+      let check = 0;
       while (i != priorityQueue.length) {
         if (priorityQueue[i][0] == x && priorityQueue[i][1] == y) {
           priorityQueue.splice(i, 1);
           break;
         }
-        i+=1;
+        i += 1;
       }
-        i=0;
-        while (i != priorityQueue.length && priorityQueue[i][3] < f) {
-          i += 1;
-        }
-        priorityQueue.splice(i, 0, [x, y, p, f]);
+      i = 0;
+      while (i != priorityQueue.length && priorityQueue[i][3] < f) {
+        i += 1;
+      }
+      priorityQueue.splice(i, 0, [x, y, p, f]);
     }
   }
 
@@ -1047,21 +1054,24 @@ $(document).ready(function () {
       }, 1800);
       solving = true;
       createArray();
+      visitedNodeCount = 0;
+      pathLength = 1;
       if (alg == "1") {
-        findPathDFS();
+        findPathDFS(true);
       } else if (alg == "2") {
         findPathBFS();
       } else if (alg == "3") {
         aStar();
       } else if (alg == "4") {
-        SSSN();
+        BSN();
       } else if (alg == "5") {
-        SSSD();
+        BSD();
       }
       if (!flag) {
         setTimeout(function () {
           $(".find").text("NO SOLUTION");
           $(".find").addClass("error");
+          $("#pathLength").text("-");
         }, delay);
       }
       setTimeout(function () {
@@ -1069,6 +1079,9 @@ $(document).ready(function () {
         if (flag) {
           $(".find").text("FIND");
           $(".endPoint").addClass("success");
+          if (alg == "1") {
+            $("#pathLength").text($(".active").toArray().length + 1);
+          }
         } else {
           setTimeout(function () {
             $(".find").text("FIND");
