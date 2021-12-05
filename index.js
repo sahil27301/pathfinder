@@ -599,7 +599,7 @@ $(document).ready(function () {
     delay += maxAdd;
   }
 
-  function SSSN() {
+  function BSN() {
     queue1.push([startX, startY, 0]);
     queue2.push([destinationX, destinationY, 0]);
     visited[startX][startY] = 1;
@@ -751,7 +751,7 @@ $(document).ready(function () {
     }
   }
 
-  function SSSD() {
+  function BSD() {
     queue1.push([startX, startY, 0]);
     queue2.push([destinationX, destinationY, 0]);
     currq1 = 0;
@@ -1043,6 +1043,15 @@ $(document).ready(function () {
       $(".speed").attr("disabled", true);
       $(".alg").attr("disabled", true);
       $(".find").text("FINDING");
+      setTimeout(function () {
+        $(".find").text($(".find").text() + ".");
+      }, 600);
+      setTimeout(function () {
+        $(".find").text($(".find").text() + ".");
+      }, 1200);
+      setTimeout(function () {
+        $(".find").text($(".find").text() + ".");
+      }, 1800);
       solving = true;
       createArray();
       visitedNodeCount = 0;
@@ -1054,9 +1063,9 @@ $(document).ready(function () {
       } else if (alg == "3") {
         aStar();
       } else if (alg == "4") {
-        SSSN();
+        BSN();
       } else if (alg == "5") {
-        SSSD();
+        BSD();
       }
       if (!flag) {
         setTimeout(function () {
